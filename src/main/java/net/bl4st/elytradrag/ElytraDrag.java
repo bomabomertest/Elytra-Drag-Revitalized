@@ -31,7 +31,7 @@ public class ElytraDrag implements ModInitializer {
 				{
 					var newVelocity = playerVelocity.multiply(1.0f - 0.05f * ModConfig.ELYTRA_DRAG);
 					spe.setVelocity(newVelocity);
-					spe.velocityModified = true;
+					spe.knockedBack = true;
 				}
 				LimitFallDistance(spe);
 			}
