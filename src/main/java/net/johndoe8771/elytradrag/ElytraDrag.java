@@ -4,7 +4,7 @@ import net.johndoe8771.config.ModConfig;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.level.ServerPlayer;
 
 public class ElytraDrag implements ModInitializer {
 
@@ -16,22 +16,22 @@ public class ElytraDrag implements ModInitializer {
 		ServerTickEvents.END_SERVER_TICK.register(this::ElytraDragTick);
 	}
 	private void ElytraDragTick(MinecraftServer server) {
-		var playerList  = server.getPlayerManager().getPlayerList();
+		var playerList  = server.getPlayerList().getPlayers();
 		if(playerList.isEmpty())
 			return;
 
-		for (ServerPlayerEntity spe : playerList)
+		for (ServerPlayer spe : playerList)
 		{
-			if(spe.isGliding() && spe.isSneaking())
+			if(spe.isFallFlying() && spe.isShiftKeyDown())
 			{
-				spe.getJumpBoostVelocityModifier();
-				var playerVelocity = spe.getVelocity();
+				spe.getJumpBoostPower();
+				var playerVelocity = spe.getDeltaMovement();
 				var playerSpeed = playerVelocity.length() * 20.0f;
 				if(playerSpeed > ModConfig.MINIMUM_SPEED)
 				{
-					var newVelocity = playerVelocity.multiply(1.0f - 0.05f * ModConfig.ELYTRA_DRAG);
-					spe.setVelocity(newVelocity);
-					spe.knockedBack = true;
+					var newVelocity = playerVelocity.scale(1.0f - 0.05f * ModConfig.ELYTRA_DRAG);
+					spe.setDeltaMovement(newVelocity);
+					spe.hurtMarked = true;
 				}
 				LimitFallDistance(spe);
 			}
@@ -43,9 +43,9 @@ public class ElytraDrag implements ModInitializer {
 	 * makes the vertical speed requirement for
 	 * fallDistance reset easier to reach
 	 */
-	private void LimitFallDistance(ServerPlayerEntity player)
+	private void LimitFallDistance(ServerPlayer player)
 	{
-		if (player.getVelocity().getY() > -1.0f && player.fallDistance > 1.0f)
+		if (player.getDeltaMovement().y() > -1.0f && player.fallDistance > 1.0f)
 			player.fallDistance = 1.0f;
 		else if(player.fallDistance > ModConfig.MAXIMUM_FALLDISTANCE)
 		{
