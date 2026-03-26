@@ -1,6 +1,6 @@
-package net.bl4st.elytradrag;
+package net.johndoe8771.elytradrag;
 
-import net.bl4st.config.ModConfig;
+import net.johndoe8771.config.ModConfig;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.server.MinecraftServer;

@@ -1,4 +1,4 @@
-package net.bl4st.config;
+package net.johndoe8771.config;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

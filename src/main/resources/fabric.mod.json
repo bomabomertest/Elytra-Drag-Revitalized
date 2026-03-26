@@ -2,21 +2,22 @@
 	"schemaVersion": 1,
 	"id": "elytra-drag",
 	"version": "${version}",
-	"name": "Elytra Drag",
+	"name": "Elytra Drag Revitalized",
 	"description": "Press the sneak key while flying with elytras to slow down",
 	"authors": [
-		"bl4st"
+		"bl4st",
+		"ArduFish",
+		"JohnDoe8771"
 	],
 	"contact": {
-		"homepage": "https://twitter.com/Hardcore_c4sual",
-		"sources": "https://github.com/bl4sterino/Elytra-Drag"
+		"sources": "https://github.com/JohnDoe8771/Elytra-Drag"
 	},
 	"license": "MIT",
 	"icon": "assets/elytradrag/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"net.bl4st.elytradrag.ElytraDrag"
+			"net.johndoe8771.elytradrag.ElytraDrag"
 		]
 	},
 	"mixins": [

@@ -1,4 +1,5 @@
-package net.bl4st.elytradrag.mixin;
+package net.johndoe8771.elytradrag.mixin;
+
 
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.entity.model.ElytraEntityModel;
