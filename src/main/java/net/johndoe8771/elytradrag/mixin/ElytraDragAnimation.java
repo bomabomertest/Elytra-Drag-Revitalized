@@ -1,15 +1,9 @@
 package net.johndoe8771.elytradrag.mixin;
 
-
-import net.minecraft.client.model.ModelPart;
-import net.minecraft.client.render.entity.model.ElytraEntityModel;
-import net.minecraft.client.render.entity.state.BipedEntityRenderState;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Arm;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.object.equipment.ElytraModel;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
+import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -18,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ElytraEntityModel.class)
+@Mixin(ElytraModel.class)
 public class ElytraDragAnimation {
     @Final
     @Shadow
@@ -34,28 +28,28 @@ public class ElytraDragAnimation {
     float playerSpeed = playerVelocity * 20.0f;
 
     public ElytraDragAnimation() {
-        playerVelocity = (float) spe.getVelocity().length();
+        playerVelocity = (float) spe.getDeltaMovement().length();
     }
 
     /**
      * Scuffed way to handle some kind of animation,
      * it just works™
      */
-    @Inject(method = "setAngles(Lnet/minecraft/client/render/entity/state/BipedEntityRenderState;)V", at = @At("TAIL"))
-    private void SetAngles(BipedEntityRenderState bipedEntityRenderState, CallbackInfo ci) {
-        if (!bipedEntityRenderState.isInSneakingPose || !bipedEntityRenderState.isGliding)
+    @Inject(method = "setupAnim(Lnet/minecraft/client/renderer/entity/state/HumanoidRenderState;)V", at = @At("TAIL"))
+    private void SetAngles(HumanoidRenderState bipedEntityRenderState, CallbackInfo ci) {
+        if (!bipedEntityRenderState.isCrouching || !bipedEntityRenderState.isFallFlying)
             return;
         long FLAPPING_SPEED = 3L;
         float progressCycle = (float)(System.currentTimeMillis() * FLAPPING_SPEED % 1000L) / 1000.0F;
         float progress = ((float)Math.sin(progressCycle * Math.PI * 2.0D) + 1.0F) / 2.0F;
         float animSpeedCoef = GetSpeedAnimationCoef(playerSpeed * 20.0F);
-        this.rightWing.yaw = -1.5f * animSpeedCoef;
-        this.leftWing.yaw = 1.5f * animSpeedCoef;
-        this.rightWing.pitch = progress * (1f - animSpeedCoef);
-        this.leftWing.pitch = progress * (1f - animSpeedCoef);
+        this.rightWing.yRot = -1.5f * animSpeedCoef;
+        this.leftWing.yRot = 1.5f * animSpeedCoef;
+        this.rightWing.xRot = progress * (1f - animSpeedCoef);
+        this.leftWing.xRot = progress * (1f - animSpeedCoef);
 
-        this.rightWing.roll = 1f;
-        this.leftWing.roll = -1f;
+        this.rightWing.zRot = 1f;
+        this.leftWing.zRot = -1f;
     }
 
     @Unique
