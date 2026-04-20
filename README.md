@@ -5,3 +5,4 @@ A Simple Mod adding QoL to Elytra flight
 * The drag coeficient, the fallDistance cap and the minimum speed required to apply drag can be modified through the config file.
 
 This is a fork of ArduFish's fork of bl4st's Elytra Drag mod, serving simply to port the mod to some newer versions. No promises of any specific versions or even future updates, but if you want to see a *newer* release (no backport requests, please) supported, feel free to open an issue and I may give it a whirl.
+I also optimized the mod a bit.
